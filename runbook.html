@@ -348,7 +348,7 @@ tests/test_rollout_guard.py ...             [100%]
         <div class="step-content">
           <div class="step-label">Click the RED commit — tests written, nothing passing yet</div>
           <div class="step-desc">Click <strong>"red: write tests for rollout_reach (4 failing)"</strong>. Show the diff: <code>tests/test_metrics.py</code> is brand new, <code>metrics.py</code> still has <code>...</code>.</div>
-          <div class="prompt-box" style="font-size:0.8rem;">github.com/justinrich-ant/tdd-training/commit/6e6c7f4</div>
+          <div class="prompt-box" style="font-size:0.8rem;">github.com/justinrich-ant/tdd-training/commit/ff63e37</div>
           <div class="callout tip">
             <div class="callout-icon">💡</div>
             <div class="callout-text"><strong>Key move:</strong> "These tests were reviewed <em>before</em> running — that's the spec review moment. We own the assertions; Claude generated the code."</div>
@@ -360,7 +360,7 @@ tests/test_rollout_guard.py ...             [100%]
         <div class="step-content">
           <div class="step-label">Click the GREEN commit — minimum implementation</div>
           <div class="step-desc">Click <strong>"green: implement rollout_reach — 4 tests pass"</strong>. Show the diff: 4 lines added to <code>metrics.py</code>, nothing else touched.</div>
-          <div class="prompt-box" style="font-size:0.8rem;">github.com/justinrich-ant/tdd-training/commit/6666966</div>
+          <div class="prompt-box" style="font-size:0.8rem;">github.com/justinrich-ant/tdd-training/commit/b609156</div>
         </div>
       </li>
       <li>
@@ -368,7 +368,7 @@ tests/test_rollout_guard.py ...             [100%]
         <div class="step-content">
           <div class="step-label">Click the REFACTOR commit — safe because tests held</div>
           <div class="step-desc">Click <strong>"refactor: use .get() default, add docstring"</strong>. Show that only <code>metrics.py</code> changed — no test file touched.</div>
-          <div class="prompt-box" style="font-size:0.8rem;">github.com/justinrich-ant/tdd-training/commit/2b4eaf0</div>
+          <div class="prompt-box" style="font-size:0.8rem;">github.com/justinrich-ant/tdd-training/commit/b3088b0</div>
           <div class="callout reveal">
             <div class="callout-icon">🎯</div>
             <div class="callout-text"><strong>Close with:</strong> "Refactor was safe because the tests held. Claude didn't need to re-reason about correctness — the suite was the contract."</div>
