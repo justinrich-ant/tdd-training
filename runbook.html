@@ -367,11 +367,16 @@ tests/test_rollout_guard.py ...             [100%]
         <div class="step-num">4</div>
         <div class="step-content">
           <div class="step-label">Click the REFACTOR commit — safe because tests held</div>
-          <div class="step-desc">Click <strong>"refactor: use .get() default, add docstring"</strong>. Show that only <code>metrics.py</code> changed — no test file touched.</div>
+          <div class="step-desc">Click <strong>"refactor: use .get() default, add docstring"</strong>. Two changes in the diff — point to each:</div>
           <div class="prompt-box" style="font-size:0.8rem;">github.com/justinrich-ant/tdd-training/commit/b3088b0</div>
+          <ul style="margin:10px 0 10px 20px; font-size:0.88rem; color:var(--text); line-height:1.7;">
+            <li><strong>Removed the scaffolding comment block</strong> (lines 1–7 in red) — the <code># DEMO 1 — this function does not exist yet</code> noise is gone; the new docstring does that job properly.</li>
+            <li><strong><code>flag["rollout_percent"]</code> → <code>flag.get("rollout_percent", 0)</code></strong> — safer dict access. If the key is ever missing, returns 0 instead of raising a <code>KeyError</code>. Extracted to a <code>pct</code> variable to keep the return line readable.</li>
+            <li><strong>No test file in the diff.</strong> That's the point — the tests are the contract; Claude cleaned up the implementation freely because the suite held.</li>
+          </ul>
           <div class="callout reveal">
             <div class="callout-icon">🎯</div>
-            <div class="callout-text"><strong>Close with:</strong> "Refactor was safe because the tests held. Claude didn't need to re-reason about correctness — the suite was the contract."</div>
+            <div class="callout-text"><strong>Close with:</strong> "The tests didn't change. That's what makes refactor safe — the suite is the contract, not the implementation. Claude can rewrite internals freely as long as green stays green."</div>
           </div>
         </div>
       </li>
