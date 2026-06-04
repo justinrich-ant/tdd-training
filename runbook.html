@@ -363,7 +363,7 @@ tests/test_validate.py ...                 [100%]
         <div class="step-content">
           <div class="step-label">Click the RED commit — tests written, nothing passing yet</div>
           <div class="step-desc">Click <strong>"red: write tests for normalize_score (4 failing)"</strong>. Show the diff: <code>tests/test_normalize.py</code> is brand new, <code>normalize.py</code> still has <code>...</code>.</div>
-          <div class="prompt-box" style="font-size:0.8rem;">github.com/justinrich-ant/tdd-training/commit/ce7b23e</div>
+          <div class="prompt-box" style="font-size:0.8rem;">github.com/justinrich-ant/tdd-training/commit/a217c12</div>
           <div class="callout tip">
             <div class="callout-icon">💡</div>
             <div class="callout-text"><strong>Key move:</strong> "These tests were reviewed <em>before</em> running — that's the spec review moment. We own the assertions; Claude generated the code."</div>
@@ -375,7 +375,7 @@ tests/test_validate.py ...                 [100%]
         <div class="step-content">
           <div class="step-label">Click the GREEN commit — minimum implementation</div>
           <div class="step-desc">Click <strong>"green: implement normalize_score — 4 tests pass"</strong>. Show the diff: 5 lines added to <code>normalize.py</code>, nothing else touched.</div>
-          <div class="prompt-box" style="font-size:0.8rem;">github.com/justinrich-ant/tdd-training/commit/4602e91</div>
+          <div class="prompt-box" style="font-size:0.8rem;">github.com/justinrich-ant/tdd-training/commit/e96e5e8</div>
         </div>
       </li>
       <li>
@@ -383,7 +383,7 @@ tests/test_validate.py ...                 [100%]
         <div class="step-content">
           <div class="step-label">Click the REFACTOR commit — safe because tests held</div>
           <div class="step-desc">Click <strong>"refactor: use max/min clamping, add docstring"</strong>. Two changes in the diff — point to each:</div>
-          <div class="prompt-box" style="font-size:0.8rem;">github.com/justinrich-ant/tdd-training/commit/1ca4553</div>
+          <div class="prompt-box" style="font-size:0.8rem;">github.com/justinrich-ant/tdd-training/commit/302f617</div>
           <ul style="margin:10px 0 10px 20px; font-size:0.88rem; color:var(--text); line-height:1.7;">
             <li><strong>Replaced the if/if/return chain</strong> with <code>clamped = max(min_val, min(max_val, value))</code> — one line handles both boundary cases, then the formula runs cleanly.</li>
             <li><strong>Added docstring</strong> — <code>"""Return value's position on a 0-100 scale…"""</code> makes the spec self-documenting.</li>
