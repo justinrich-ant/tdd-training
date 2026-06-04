@@ -321,6 +321,21 @@ tests/test_validate.py ...                 [100%]
   <h2>Test-first on a new function</h2>
   <div class="subtitle">~4 min · The Red → Green → Refactor loop · Two paths depending on time</div>
 
+  <!-- CONTEXT BOX -->
+  <div style="background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius); padding:20px 24px; margin-bottom:20px;">
+    <div style="font-size:0.72rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--orange); font-weight:600; margin-bottom:10px;">The function &amp; the tests</div>
+    <p style="font-size:0.9rem; margin-bottom:12px;"><strong><code>normalize_score(value, min_val, max_val) → float</code></strong><br>
+    Given a raw measurement and its expected range, return where it falls on a 0–100 scale. Values outside the range clamp to 0 or 100. Example: a thickness reading of 1.2mm on a 0.5–2.0mm scale → <code>normalize_score(1.2, 0.5, 2.0)</code> → ~46.7.</p>
+    <p style="font-size:0.88rem; color:var(--muted); margin-bottom:4px;">The 4 tests cover the spec boundaries:</p>
+    <ul style="font-size:0.88rem; color:var(--text); line-height:1.8; margin-left:18px;">
+      <li><code>normalize_score(0, 0, 100)</code> → <strong>0.0</strong> — value at the minimum edge returns zero</li>
+      <li><code>normalize_score(100, 0, 100)</code> → <strong>100.0</strong> — value at the maximum edge returns one hundred</li>
+      <li><code>normalize_score(50, 0, 100)</code> → <strong>50.0</strong> — midpoint returns exactly half</li>
+      <li><code>normalize_score(-10, 0, 100)</code> → <strong>0.0</strong> — value below minimum clamps to zero</li>
+    </ul>
+    <div style="margin-top:12px; font-size:0.85rem; color:var(--muted);">The stub in <code>data_utils/normalize.py</code> has just <code>...</code>. No logic yet — the tests are written first so they define the spec before a single line of implementation exists.</div>
+  </div>
+
   <!-- PATH A -->
   <div class="demo-block" style="border-color: #4caf7d44;">
     <div class="demo-header">
