@@ -297,8 +297,8 @@
 <pre class="code">pytest</pre>
         <div class="terminal">
 <span class="t-muted">collected 7 items</span>
-<span class="t-pass">tests/test_evaluate.py ....                 [ 57%]
-tests/test_rollout_guard.py ...             [100%]
+<span class="t-pass">tests/test_normalize.py ....               [ 57%]
+tests/test_validate.py ...                 [100%]
 7 passed in 0.01s</span>
         </div>
       </div>
@@ -347,8 +347,8 @@ tests/test_rollout_guard.py ...             [100%]
         <div class="step-num">2</div>
         <div class="step-content">
           <div class="step-label">Click the RED commit — tests written, nothing passing yet</div>
-          <div class="step-desc">Click <strong>"red: write tests for rollout_reach (4 failing)"</strong>. Show the diff: <code>tests/test_metrics.py</code> is brand new, <code>metrics.py</code> still has <code>...</code>.</div>
-          <div class="prompt-box" style="font-size:0.8rem;">github.com/justinrich-ant/tdd-training/commit/ff63e37</div>
+          <div class="step-desc">Click <strong>"red: write tests for normalize_score (4 failing)"</strong>. Show the diff: <code>tests/test_normalize.py</code> is brand new, <code>normalize.py</code> still has <code>...</code>.</div>
+          <div class="prompt-box" style="font-size:0.8rem;">github.com/justinrich-ant/tdd-training/commit/ce7b23e</div>
           <div class="callout tip">
             <div class="callout-icon">💡</div>
             <div class="callout-text"><strong>Key move:</strong> "These tests were reviewed <em>before</em> running — that's the spec review moment. We own the assertions; Claude generated the code."</div>
@@ -359,19 +359,19 @@ tests/test_rollout_guard.py ...             [100%]
         <div class="step-num">3</div>
         <div class="step-content">
           <div class="step-label">Click the GREEN commit — minimum implementation</div>
-          <div class="step-desc">Click <strong>"green: implement rollout_reach — 4 tests pass"</strong>. Show the diff: 4 lines added to <code>metrics.py</code>, nothing else touched.</div>
-          <div class="prompt-box" style="font-size:0.8rem;">github.com/justinrich-ant/tdd-training/commit/b609156</div>
+          <div class="step-desc">Click <strong>"green: implement normalize_score — 4 tests pass"</strong>. Show the diff: 5 lines added to <code>normalize.py</code>, nothing else touched.</div>
+          <div class="prompt-box" style="font-size:0.8rem;">github.com/justinrich-ant/tdd-training/commit/4602e91</div>
         </div>
       </li>
       <li>
         <div class="step-num">4</div>
         <div class="step-content">
           <div class="step-label">Click the REFACTOR commit — safe because tests held</div>
-          <div class="step-desc">Click <strong>"refactor: use .get() default, add docstring"</strong>. Two changes in the diff — point to each:</div>
-          <div class="prompt-box" style="font-size:0.8rem;">github.com/justinrich-ant/tdd-training/commit/b3088b0</div>
+          <div class="step-desc">Click <strong>"refactor: use max/min clamping, add docstring"</strong>. Two changes in the diff — point to each:</div>
+          <div class="prompt-box" style="font-size:0.8rem;">github.com/justinrich-ant/tdd-training/commit/1ca4553</div>
           <ul style="margin:10px 0 10px 20px; font-size:0.88rem; color:var(--text); line-height:1.7;">
-            <li><strong>Removed the scaffolding comment block</strong> (lines 1–7 in red) — the <code># DEMO 1 — this function does not exist yet</code> noise is gone; the new docstring does that job properly.</li>
-            <li><strong><code>flag["rollout_percent"]</code> → <code>flag.get("rollout_percent", 0)</code></strong> — safer dict access. If the key is ever missing, returns 0 instead of raising a <code>KeyError</code>. Extracted to a <code>pct</code> variable to keep the return line readable.</li>
+            <li><strong>Replaced the if/if/return chain</strong> with <code>clamped = max(min_val, min(max_val, value))</code> — one line handles both boundary cases, then the formula runs cleanly.</li>
+            <li><strong>Added docstring</strong> — <code>"""Return value's position on a 0-100 scale…"""</code> makes the spec self-documenting.</li>
             <li><strong>No test file in the diff.</strong> That's the point — the tests are the contract; Claude cleaned up the implementation freely because the suite held.</li>
           </ul>
           <div class="callout reveal">
@@ -390,14 +390,14 @@ tests/test_rollout_guard.py ...             [100%]
       <div class="demo-title">Path B — Live TDD with Claude <span style="font-weight:400;color:var(--muted)">(if time permits)</span></div>
       <div class="demo-time">~5 min</div>
     </div>
-    <div class="step-desc" style="margin-bottom:16px;">Run <code>./reset_demo.sh 1</code> first to remove <code>test_metrics.py</code> and restore the stub. Then reproduce the arc live.</div>
+    <div class="step-desc" style="margin-bottom:16px;">Run <code>./reset_demo.sh 1</code> first to remove <code>test_normalize.py</code> and restore the stub. Then reproduce the arc live.</div>
 
     <ul class="steps">
       <li>
         <div class="step-num">1</div>
         <div class="step-content">
           <div class="step-label">Show the spec stub — nothing implemented yet</div>
-          <div class="step-desc">Open <code>flag_service/metrics.py</code>. Read the spec aloud: "Given a flag and a total user count, return how many users would see the flag. Return 0 if disabled." Point out the stub <code>...</code></div>
+          <div class="step-desc">Open <code>data_utils/normalize.py</code>. Read the spec aloud: "Given a numeric value and a min/max range, return where it falls on a 0–100 scale. Clamp to [0, 100] if out of range." Point out the stub <code>...</code></div>
         </div>
       </li>
       <li>
@@ -405,7 +405,7 @@ tests/test_rollout_guard.py ...             [100%]
         <div class="step-content">
           <div class="step-label">RED — Claude writes the failing tests</div>
           <div class="prompt-label red">Paste this prompt verbatim</div>
-          <div class="prompt-box">Write failing tests for rollout_reach in flag_service/metrics.py. Do not write the implementation yet. Cover: disabled flag returns 0, 50% rollout of 1000 users returns 500, 100% rollout, 0% rollout.</div>
+          <div class="prompt-box">Write failing tests for normalize_score in data_utils/normalize.py. Do not write the implementation yet. Cover: value at min returns 0, value at max returns 100, midpoint returns 50, value below min clamps to 0.</div>
           <div class="callout tip">
             <div class="callout-icon">💡</div>
             <div class="callout-text"><strong>Read the tests aloud</strong> before running — this is the review moment. "I own the spec; Claude generated the assertions."</div>
@@ -416,12 +416,12 @@ tests/test_rollout_guard.py ...             [100%]
         <div class="step-num">3</div>
         <div class="step-content">
           <div class="step-label">Run pytest — confirm RED</div>
-<pre class="code">pytest tests/test_metrics.py</pre>
+<pre class="code">pytest tests/test_normalize.py</pre>
           <div class="terminal">
-<span class="t-fail">FAILED tests/test_metrics.py::test_disabled_flag_returns_zero
-FAILED tests/test_metrics.py::test_fifty_percent_rollout
-FAILED tests/test_metrics.py::test_hundred_percent_rollout
-FAILED tests/test_metrics.py::test_zero_percent_rollout
+<span class="t-fail">FAILED tests/test_normalize.py::test_min_value_returns_zero
+FAILED tests/test_normalize.py::test_max_value_returns_hundred
+FAILED tests/test_normalize.py::test_midpoint_returns_fifty
+FAILED tests/test_normalize.py::test_value_below_min_clamps_to_zero
 4 failed</span>
           </div>
         </div>
@@ -431,8 +431,8 @@ FAILED tests/test_metrics.py::test_zero_percent_rollout
         <div class="step-content">
           <div class="step-label">GREEN — implement</div>
           <div class="prompt-label green">Paste this prompt verbatim</div>
-          <div class="prompt-box">Now implement rollout_reach in flag_service/metrics.py. Minimum code to make the tests pass. Do not modify the tests.</div>
-<pre class="code">pytest tests/test_metrics.py</pre>
+          <div class="prompt-box">Now implement normalize_score in data_utils/normalize.py. Minimum code to make the tests pass. Do not modify the tests.</div>
+<pre class="code">pytest tests/test_normalize.py</pre>
           <div class="terminal"><span class="t-pass">4 passed in 0.01s</span></div>
         </div>
       </li>
@@ -473,11 +473,11 @@ FAILED tests/test_metrics.py::test_zero_percent_rollout
         <div class="step-num">1</div>
         <div class="step-content">
           <div class="step-label">Show the green test suite — all 3 pass</div>
-<pre class="code">pytest tests/test_rollout_guard.py -v</pre>
+<pre class="code">pytest tests/test_validate.py -v</pre>
           <div class="terminal">
-<span class="t-pass">PASSED tests/test_rollout_guard.py::test_allows_small_prod_bump
-PASSED tests/test_rollout_guard.py::test_blocks_huge_prod_jump
-PASSED tests/test_rollout_guard.py::test_staging_allows_large_bumps
+<span class="t-pass">PASSED tests/test_validate.py::test_valid_reading_passes
+PASSED tests/test_validate.py::test_out_of_range_fails
+PASSED tests/test_validate.py::test_at_lower_bound_passes
 3 passed</span>
           </div>
           <div class="callout warn">
@@ -490,20 +490,20 @@ PASSED tests/test_rollout_guard.py::test_staging_allows_large_bumps
         <div class="step-num">2</div>
         <div class="step-content">
           <div class="step-label">Open the tests — show the too-weak assertions</div>
-          <div class="step-desc">Open <code>tests/test_rollout_guard.py</code>. Read each assertion aloud:</div>
+          <div class="step-desc">Open <code>tests/test_validate.py</code>. Read each assertion aloud:</div>
 <pre class="code"><span class="code"><span class="cm"># test 1 — "too-weak": checks shape, not value</span>
-<span class="kw">def</span> <span class="fn">test_allows_small_prod_bump</span>():
-    result = can_bump(<span class="num">0</span>, <span class="num">10</span>, <span class="str">"prod"</span>)
+<span class="kw">def</span> <span class="fn">test_valid_reading_passes</span>():
+    result = validate_reading(<span class="num">75.0</span>, <span class="num">0.0</span>, <span class="num">100.0</span>)
     <span class="kw">assert</span> result[<span class="str">"ok"</span>] <span class="kw">is not</span> None  <span class="bug">← always True. False is not None.</span>
 
 <span class="cm"># test 2 — same problem</span>
-<span class="kw">def</span> <span class="fn">test_blocks_huge_prod_jump</span>():
-    result = can_bump(<span class="num">0</span>, <span class="num">80</span>, <span class="str">"prod"</span>)
+<span class="kw">def</span> <span class="fn">test_out_of_range_fails</span>():
+    result = validate_reading(<span class="num">150.0</span>, <span class="num">0.0</span>, <span class="num">100.0</span>)
     <span class="kw">assert</span> result[<span class="str">"ok"</span>] <span class="kw">is not</span> None  <span class="bug">← passes even when ok=False</span>
 
 <span class="cm"># test 3 — plain truthy check</span>
-<span class="kw">def</span> <span class="fn">test_staging_allows_large_bumps</span>():
-    result = can_bump(<span class="num">0</span>, <span class="num">100</span>, <span class="str">"staging"</span>)
+<span class="kw">def</span> <span class="fn">test_at_lower_bound_passes</span>():
+    result = validate_reading(<span class="num">0.0</span>, <span class="num">0.0</span>, <span class="num">100.0</span>)
     <span class="kw">assert</span> result         <span class="bug">← dict is always truthy</span></span></pre>
           <div class="callout reveal">
             <div class="callout-icon">💡</div>
@@ -517,15 +517,15 @@ PASSED tests/test_rollout_guard.py::test_staging_allows_large_bumps
           <div class="step-label">Fix one test to be honest — expose the real bug</div>
           <div class="step-desc">In Claude Code, say:</div>
           <div class="prompt-label red">Live in Claude Code</div>
-          <div class="prompt-box">Rewrite test_blocks_huge_prod_jump to actually assert that ok is False. Then also add a test: can_bump(0, 25, "prod") should return ok=True — a 25pp jump is exactly at the limit, it should be allowed.</div>
-<pre class="code">pytest tests/test_rollout_guard.py -v</pre>
+          <div class="prompt-box">Rewrite test_out_of_range_fails to actually assert that ok is False. Then also add a test: validate_reading(100.0, 0.0, 100.0) should return ok=True — a reading exactly at the upper boundary is valid.</div>
+<pre class="code">pytest tests/test_validate.py -v</pre>
           <div class="terminal">
-<span class="t-fail">FAILED tests/test_rollout_guard.py::test_blocks_huge_prod_jump
-FAILED tests/test_rollout_guard.py::test_allows_exact_25pp_jump</span>
+<span class="t-fail">FAILED tests/test_validate.py::test_out_of_range_fails
+FAILED tests/test_validate.py::test_at_upper_boundary_is_valid</span>
           </div>
           <div class="callout warn">
             <div class="callout-icon">🐛</div>
-            <div class="callout-text"><strong>The reveal:</strong> <code>can_bump(0, 25, 'prod')</code> returns <code>ok: False</code>. A 25-point jump — exactly at the limit — is wrongly blocked. The bug: <code>&gt;= 25</code> instead of <code>&gt; 25</code>. It was invisible because the lying tests never checked the boundary.</div>
+            <div class="callout-text"><strong>The reveal:</strong> <code>validate_reading(100.0, 0.0, 100.0)</code> returns <code>ok: False</code>. A reading exactly at the upper boundary is wrongly rejected. The bug: <code>&gt;= high</code> instead of <code>&gt; high</code>. It was invisible because the lying tests never checked the boundary.</div>
           </div>
         </div>
       </li>
@@ -534,8 +534,8 @@ FAILED tests/test_rollout_guard.py::test_allows_exact_25pp_jump</span>
         <div class="step-content">
           <div class="step-label">Fix the bug — confirm all green</div>
           <div class="prompt-label green">Live in Claude Code</div>
-          <div class="prompt-box">Fix rollout_guard.py so that can_bump(0, 25, "prod") returns ok=True. The limit is strictly greater than 25, not greater-than-or-equal. Do not modify the tests.</div>
-<pre class="code">pytest tests/test_rollout_guard.py -v</pre>
+          <div class="prompt-box">Fix validate.py so that validate_reading(100.0, 0.0, 100.0) returns ok=True. A reading exactly at the boundary is valid — use strictly greater than, not greater-than-or-equal. Do not modify the tests.</div>
+<pre class="code">pytest tests/test_validate.py -v</pre>
           <div class="terminal">
 <span class="t-pass">5 passed</span>
           </div>
@@ -635,13 +635,13 @@ FAILED tests/test_rollout_guard.py::test_allows_exact_25pp_jump</span>
       <li>
         <div class="step-num">1</div>
         <div class="step-content">
-          <div class="step-label">Show the 4 basic tests for is_user_in_rollout</div>
-<pre class="code">pytest tests/test_evaluate.py -v</pre>
+          <div class="step-label">Show the 4 basic tests for normalize_score</div>
+<pre class="code">pytest tests/test_normalize.py -v</pre>
           <div class="terminal">
-<span class="t-pass">PASSED test_zero_percent_excludes_all_users
-PASSED test_hundred_percent_includes_all_users
-PASSED test_same_user_is_deterministic
-PASSED test_disabled_flag_always_false
+<span class="t-pass">PASSED test_min_value_returns_zero
+PASSED test_max_value_returns_hundred
+PASSED test_midpoint_returns_fifty
+PASSED test_value_below_min_clamps_to_zero
 4 passed</span>
           </div>
           <div class="step-desc">Ask: "What are we NOT testing?"</div>
@@ -652,18 +652,18 @@ PASSED test_disabled_flag_always_false
         <div class="step-content">
           <div class="step-label">Ask Claude for edge cases</div>
           <div class="prompt-label edge">One-line prompt</div>
-          <div class="prompt-box">What edge cases am I missing for is_user_in_rollout in flag_service/evaluate.py? Add them as tests. Match the style in tests/test_evaluate.py.</div>
-          <div class="step-desc" style="margin-top:8px;">Claude will typically generate: empty string user_id, very long user_id, rollout_percent=99 vs 100, negative percent, float percent, None user_id.</div>
+          <div class="prompt-box">What edge cases am I missing for normalize_score in data_utils/normalize.py? Add them as tests. Match the style in tests/test_normalize.py.</div>
+          <div class="step-desc" style="margin-top:8px;">Claude will typically generate: value above max clamps to 100, min_val == max_val (division by zero), negative range, float precision, value exactly at boundary.</div>
         </div>
       </li>
       <li>
         <div class="step-num">3</div>
         <div class="step-content">
           <div class="step-label">Run — see what passes and what fails</div>
-<pre class="code">pytest tests/test_evaluate.py -v</pre>
+<pre class="code">pytest tests/test_normalize.py -v</pre>
           <div class="callout reveal">
             <div class="callout-icon">🎯</div>
-            <div class="callout-text"><strong>If any tests fail</strong> — that's the point. "Claude found something the original tests didn't cover. Is this a bug or a spec question? Either way, it's a conversation we needed to have." Categories Claude is good at: boundary values (0, max, off-by-one), error paths (None, empty, malformed), encoding surprises (unicode user IDs).</div>
+            <div class="callout-text"><strong>If any tests fail</strong> — that's the point. "Claude found something the original tests didn't cover. Is this a bug or a spec question? Either way, it's a conversation we needed to have." Categories Claude is good at: boundary values (min, max, equal bounds), error paths (min == max, negative range), float precision surprises.</div>
           </div>
         </div>
       </li>
