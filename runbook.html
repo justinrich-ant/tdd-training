@@ -518,7 +518,8 @@ PASSED tests/test_validate.py::test_at_lower_bound_passes
         <div class="step-num">2</div>
         <div class="step-content">
           <div class="step-label">Open the tests — show the too-weak assertions</div>
-          <div class="step-desc">Open <code>tests/test_validate.py</code>. Read each assertion aloud:</div>
+          <div class="step-desc">Print the file in the terminal, then read each assertion aloud:</div>
+<pre class="code">cat -n tests/test_validate.py</pre>
 <pre class="code"><span class="code"><span class="cm"># test 1 — "too-weak": checks shape, not value</span>
 <span class="kw">def</span> <span class="fn">test_valid_reading_passes</span>():
     result = validate_reading(<span class="num">75.0</span>, <span class="num">0.0</span>, <span class="num">100.0</span>)
