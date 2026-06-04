@@ -373,25 +373,38 @@ tests/test_validate.py ...                 [100%]
       <li>
         <div class="step-num">3</div>
         <div class="step-content">
-          <div class="step-label">Click the GREEN commit — minimum implementation</div>
-          <div class="step-desc">Click <strong>"green: implement normalize_score — 4 tests pass"</strong>. Show the diff: 5 lines added to <code>normalize.py</code>, nothing else touched.</div>
+          <div class="step-label">Click the GREEN commit — now it works</div>
+          <div class="step-desc">Click <strong>"green: implement normalize_score — 4 tests pass"</strong>.</div>
           <div class="prompt-box" style="font-size:0.8rem;">github.com/justinrich-ant/tdd-training/commit/e96e5e8</div>
+          <div style="font-size:0.88rem; color:var(--text); margin-top:10px; line-height:1.7;">
+            The commit body shows <code>4 passed in 0.01s</code> — we went from red to green without touching the tests once.<br><br>
+            In the diff, only <code>normalize.py</code> changed. The <code>...</code> stub is gone, replaced by the logic: two boundary checks (clamp below min to 0, clamp above max to 100) and the scaling formula in between.<br><br>
+            <strong>Point out that the test file is absent from the diff.</strong> Claude was told "make the tests pass, do not modify the tests" — so the only thing it was allowed to touch was the implementation. The tests acted as a constraint, not just a checklist.
+          </div>
+          <div class="callout tip">
+            <div class="callout-icon">💡</div>
+            <div class="callout-text"><strong>Talking point:</strong> "This is the minimum code that satisfies the spec we wrote. Nothing extra, nothing assumed. If the spec was wrong, we'd know right now — not after shipping."</div>
+          </div>
         </div>
       </li>
       <li>
         <div class="step-num">4</div>
         <div class="step-content">
-          <div class="step-label">Click the REFACTOR commit — safe because tests held</div>
-          <div class="step-desc">Click <strong>"refactor: use max/min clamping, add docstring"</strong>. Two changes in the diff — point to each:</div>
+          <div class="step-label">Click the REFACTOR commit — cleaner, still green</div>
+          <div class="step-desc">Click <strong>"refactor: use max/min clamping, add docstring"</strong>.</div>
           <div class="prompt-box" style="font-size:0.8rem;">github.com/justinrich-ant/tdd-training/commit/302f617</div>
-          <ul style="margin:10px 0 10px 20px; font-size:0.88rem; color:var(--text); line-height:1.7;">
-            <li><strong>Replaced the if/if/return chain</strong> with <code>clamped = max(min_val, min(max_val, value))</code> — one line handles both boundary cases, then the formula runs cleanly.</li>
-            <li><strong>Added docstring</strong> — <code>"""Return value's position on a 0-100 scale…"""</code> makes the spec self-documenting.</li>
-            <li><strong>No test file in the diff.</strong> That's the point — the tests are the contract; Claude cleaned up the implementation freely because the suite held.</li>
+          <div style="font-size:0.88rem; color:var(--text); margin-top:10px; line-height:1.7;">
+            The commit body still shows <code>4 passed in 0.00s</code> — nothing broke.<br><br>
+            Two things changed in the diff:
+          </div>
+          <ul style="margin:8px 0 10px 20px; font-size:0.88rem; color:var(--text); line-height:1.8;">
+            <li><strong>The two if/return branches collapsed into one line</strong> — <code>clamped = max(min_val, min(max_val, value))</code> clamps the value to the valid range in one expression, then the formula runs cleanly on a single line. Same behavior, less code.</li>
+            <li><strong>A docstring was added</strong> — <code>"""Return value's position on a 0-100 scale…"""</code> so the function explains itself without relying on comments.</li>
+            <li><strong>The test file is absent from the diff again.</strong> Refactor means: change the internals, leave the contract alone.</li>
           </ul>
           <div class="callout reveal">
             <div class="callout-icon">🎯</div>
-            <div class="callout-text"><strong>Close with:</strong> "The tests didn't change. That's what makes refactor safe — the suite is the contract, not the implementation. Claude can rewrite internals freely as long as green stays green."</div>
+            <div class="callout-text"><strong>Close with:</strong> "We didn't have to re-run the logic in our head to verify this was safe. The tests did that. That's what makes refactor cheap — you're not reasoning about correctness, you're reading green."</div>
           </div>
         </div>
       </li>
