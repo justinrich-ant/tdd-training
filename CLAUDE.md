@@ -1,28 +1,21 @@
-# flag-service (TDD training demo)
+# data-utils (TDD training demo)
 
 ## Running tests
 `pytest` — runs the full suite. No build step required.
 
 ## Repo layout
-- `flag_service/evaluate.py` — core bucketing logic (`is_user_in_rollout`, `evaluate`)
-- `flag_service/metrics.py` — rollout analytics helpers (Demo 1)
-- `flag_service/rollout_guard.py` — safety guard for prod bumps (Demo 2)
-- `flag_service/flags.py` — static flag store (12 flags across dev/staging/prod)
+- `data_utils/normalize.py` — score normalization helper (Demo 1 + 3)
+- `data_utils/validate.py` — sensor reading validator (Demo 2)
 - `tests/` — pytest test suite
 
-## Flag structure
-Each flag is a dict:
-```
-{
-  "key": "new-checkout",     # identifier
-  "env": "prod",             # dev | staging | prod
-  "enabled": True,           # master kill-switch
-  "rollout_percent": 25,     # 0-100, fraction of users who see this flag
-  "owner": "payments"        # team slug
-}
-```
+## Function specs
+`normalize_score(value, min_val, max_val) -> float`
+Return where `value` falls on a 0–100 scale within [min_val, max_val]. Clamp to [0, 100] if out of range.
+
+`validate_reading(value, low, high) -> dict`
+Returns {"ok": bool, "reason": str}. A reading exactly at a boundary is valid.
 
 ## Never
 - Never edit a test to make it pass. If a test seems wrong, stop and explain why.
 - Write failing tests FIRST. Implementation comes after.
-- Never raise a prod flag above its staging rollout_percent.
+- Never return ok=False for a reading that falls exactly on the boundary.
