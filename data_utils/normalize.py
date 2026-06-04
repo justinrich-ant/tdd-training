@@ -1,9 +1,4 @@
-# Spec: given a numeric value and a [min_val, max_val] range, return where
-# the value falls on a 0-100 scale. Clamp to [0, 100] if out of range.
-
 def normalize_score(value: float, min_val: float, max_val: float) -> float:
-    if value <= min_val:
-        return 0.0
-    if value >= max_val:
-        return 100.0
-    return (value - min_val) / (max_val - min_val) * 100
+    """Return value's position on a 0-100 scale within [min_val, max_val]. Clamps to [0, 100]."""
+    clamped = max(min_val, min(max_val, value))
+    return (clamped - min_val) / (max_val - min_val) * 100
